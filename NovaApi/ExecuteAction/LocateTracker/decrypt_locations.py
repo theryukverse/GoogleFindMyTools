@@ -20,7 +20,7 @@ from SpotApi.GetEidInfoForE2eeDevices.get_owner_key import get_owner_key
 
 
 def create_google_maps_link(latitude, longitude):
-    try:  
+    try:
         latitude = float(latitude)
         longitude = float(longitude)
         if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
@@ -28,7 +28,7 @@ def create_google_maps_link(latitude, longitude):
     except ValueError as e:
         return f"Error: {e}" #more descriptive error message for the user
     base_url = "https://www.google.com/maps/search/?api=1"
-    query_params = f"query={latitude},{longitude}"  
+    query_params = f"query={latitude},{longitude}"
 
     return f"{base_url}&{query_params}"
 
@@ -131,30 +131,30 @@ def decrypt_location_response_locations(device_update_protobuf):
         print("No locations found.")
         return
 
+    final_loc = None
+
     for loc in location_time_array:
 
         if loc.status == Common_pb2.Status.SEMANTIC:
             print(f"Semantic Location: {loc.name}")
 
         else:
-            proto_loc = DeviceUpdate_pb2.Location()
-            proto_loc.ParseFromString(loc.decrypted_location)
-
-            latitude = proto_loc.latitude / 1e7
-            longitude = proto_loc.longitude / 1e7
-            altitude = proto_loc.altitude
+            latitude = loc.latitude
+            longitude = loc.longitude
+            altitude = loc.altitude
 
             print(f"Latitude: {latitude}")
             print(f"Longitude: {longitude}")
             print(f"Altitude: {altitude}")
             print(f"Google Maps Link: {create_google_maps_link(latitude, longitude)}")
-            
-        print(f"Time: {datetime.datetime.fromtimestamp(loc.time).strftime('%Y-%m-%d %H:%M:%S')}")
+            final_loc = loc
+
+        print(f"Time: {loc.formatted_time}")
         print(f"Status: {loc.status}")
         print(f"Is Own Report: {loc.is_own_report}")
         print("-" * 40)
 
-    pass
+    return final_loc
 
 
 if __name__ == '__main__':
