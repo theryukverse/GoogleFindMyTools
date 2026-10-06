@@ -4,6 +4,7 @@
 #
 import struct
 
+
 class GrpcParser:
     @staticmethod
     def extract_grpc_payload(grpc: bytes) -> bytes:
@@ -19,7 +20,7 @@ class GrpcParser:
             raise ValueError("Invalid GRPC payload length")
 
         # Extract the payload
-        data = grpc[5:5 + length]
+        data = grpc[5 : 5 + length]
 
         return data
 

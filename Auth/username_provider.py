@@ -4,7 +4,8 @@
 #
 from Auth.token_cache import get_cached_value
 
-username_string = 'username'
+username_string = "username"
+
 
 def get_username():
 
@@ -15,5 +16,6 @@ def get_username():
 
     return ""
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     get_username()

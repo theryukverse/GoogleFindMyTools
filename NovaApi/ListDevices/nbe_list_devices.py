@@ -4,14 +4,18 @@
 #
 
 import binascii
-from NovaApi.ExecuteAction.LocateTracker.location_request import get_location_data_for_device
+from NovaApi.ExecuteAction.LocateTracker.location_request import (
+    get_location_data_for_device,
+)
 from NovaApi.nova_request import nova_request
 from NovaApi.scopes import NOVA_LIST_DEVICS_API_SCOPE
 from NovaApi.util import generate_random_uuid
 from ProtoDecoders import DeviceUpdate_pb2
 from ProtoDecoders.decoder import parse_device_list_protobuf, get_canonic_ids
 from SpotApi.CreateBleDevice.create_ble_device import register_esp32
-from SpotApi.UploadPrecomputedPublicKeyIds.upload_precomputed_public_key_ids import refresh_custom_trackers
+from SpotApi.UploadPrecomputedPublicKeyIds.upload_precomputed_public_key_ids import (
+    refresh_custom_trackers,
+)
 
 
 def request_device_list():
@@ -35,7 +39,7 @@ def create_device_list_request():
     binary_payload = wrapper.SerializeToString()
 
     # Convert to hex string
-    hex_payload = binascii.hexlify(binary_payload).decode('utf-8')
+    hex_payload = binascii.hexlify(binary_payload).decode("utf-8")
 
     return hex_payload
 
@@ -59,9 +63,11 @@ def list_devices():
     for idx, (device_name, canonic_id) in enumerate(canonic_ids, start=1):
         print(f"{idx}. {device_name}: {canonic_id}")
 
-    selected_value = input("\nIf you want to see locations of a tracker, type the number of the tracker and press 'Enter'.\nIf you want to register a new ESP32- or Zephyr-based tracker, type 'r' and press 'Enter': ")
+    selected_value = input(
+        "\nIf you want to see locations of a tracker, type the number of the tracker and press 'Enter'.\nIf you want to register a new ESP32- or Zephyr-based tracker, type 'r' and press 'Enter': "
+    )
 
-    if selected_value == 'r':
+    if selected_value == "r":
         print("Loading...")
         register_esp32()
     else:
@@ -72,5 +78,5 @@ def list_devices():
         get_location_data_for_device(selected_canonic_id, selected_device_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     list_devices()

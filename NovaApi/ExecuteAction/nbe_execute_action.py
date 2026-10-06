@@ -11,7 +11,13 @@ from ProtoDecoders import DeviceUpdate_pb2
 # Generate a random, but fixed client ID for request identification for this session
 client_id = generate_random_uuid()
 
-def create_action_request(canonic_device_id, gcm_registration_id, request_uuid = generate_random_uuid(), fmd_client_uuid = client_id):
+
+def create_action_request(
+    canonic_device_id,
+    gcm_registration_id,
+    request_uuid=generate_random_uuid(),
+    fmd_client_uuid=client_id,
+):
     action_request = DeviceUpdate_pb2.ExecuteActionRequest()
 
     action_request.scope.type = DeviceUpdate_pb2.DeviceType.SPOT_DEVICE
@@ -32,6 +38,6 @@ def serialize_action_request(actionRequest):
     binary_payload = actionRequest.SerializeToString()
 
     # Convert to hex string
-    hex_payload = binascii.hexlify(binary_payload).decode('utf-8')
+    hex_payload = binascii.hexlify(binary_payload).decode("utf-8")
 
     return hex_payload

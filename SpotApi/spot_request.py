@@ -4,7 +4,7 @@
 #
 
 import httpx
-import h2 # required for httpx to support HTTP/2
+import h2  # required for httpx to support HTTP/2
 from bs4 import BeautifulSoup
 
 from Auth.spot_token_retrieval import get_spot_token
@@ -13,7 +13,10 @@ from SpotApi.grpc_parser import GrpcParser
 
 
 def spot_request(api_scope: str, payload: bytes) -> bytes:
-    url = "https://spot-pa.googleapis.com/google.internal.spot.v1.SpotService/" + api_scope
+    url = (
+        "https://spot-pa.googleapis.com/google.internal.spot.v1.SpotService/"
+        + api_scope
+    )
     spot_oauth_token = get_spot_token(get_username())
 
     headers = {
@@ -21,7 +24,7 @@ def spot_request(api_scope: str, payload: bytes) -> bytes:
         "Content-Type": "application/grpc",
         "Te": "trailers",
         "Authorization": "Bearer " + spot_oauth_token,
-        "Grpc-Accept-Encoding": "gzip"
+        "Grpc-Accept-Encoding": "gzip",
     }
 
     payload = GrpcParser.construct_grpc(payload)
@@ -34,7 +37,7 @@ def spot_request(api_scope: str, payload: bytes) -> bytes:
             result = GrpcParser.extract_grpc_payload(response.content)
             return result
         else:
-            soup = BeautifulSoup(response.text, 'html.parser')
+            soup = BeautifulSoup(response.text, "html.parser")
             print("[NovaRequest] Error: ", soup.get_text())
 
-    return b''
+    return b""

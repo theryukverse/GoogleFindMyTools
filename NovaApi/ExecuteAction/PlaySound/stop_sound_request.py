@@ -13,10 +13,10 @@ def stop_sound_request(canonic_device_id, gcm_registration_id):
     return create_sound_request(False, canonic_device_id, gcm_registration_id)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sample_canonic_device_id = get_example_data("sample_canonic_device_id")
 
-    fcm_token = FcmReceiver().register_for_location_updates( lambda x: print(x) )
+    fcm_token = FcmReceiver().register_for_location_updates(lambda x: print(x))
 
     hex_payload = stop_sound_request(sample_canonic_device_id, fcm_token)
     nova_request(NOVA_ACTION_API_SCOPE, hex_payload)

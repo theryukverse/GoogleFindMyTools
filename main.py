@@ -5,6 +5,5 @@
 
 from NovaApi.ListDevices.nbe_list_devices import list_devices
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     list_devices()

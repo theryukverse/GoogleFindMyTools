@@ -6,6 +6,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from chrome_driver import create_driver
 
+
 def request_oauth_account_token_flow():
 
     print("""[AuthFlow] This script will now open Google Chrome on your device to login to your Google account.
@@ -33,7 +34,7 @@ def request_oauth_account_token_flow():
 
         # Get the value of the "oauth_token" cookie
         oauth_token_cookie = driver.get_cookie("oauth_token")
-        oauth_token_value = oauth_token_cookie['value']
+        oauth_token_value = oauth_token_cookie["value"]
 
         # Print the value of the "oauth_token" cookie
         print("[AuthFlow] Retrieved Account Token successfully.")
@@ -44,5 +45,6 @@ def request_oauth_account_token_flow():
         # Close the browser
         driver.quit()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     request_oauth_account_token_flow()

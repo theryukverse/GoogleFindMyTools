@@ -6,6 +6,7 @@ from ProtoDecoders import Common_pb2
 from ProtoDecoders import DeviceUpdate_pb2
 from SpotApi.spot_request import spot_request
 
+
 def get_eid_info():
     get_eid_info_for_e2ee_devices_request = Common_pb2.GetEidInfoForE2eeDevicesRequest()
     get_eid_info_for_e2ee_devices_request.ownerKeyVersion = -1
@@ -20,5 +21,5 @@ def get_eid_info():
     return eid_info
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(get_eid_info().encryptedOwnerKeyAndMetadata)

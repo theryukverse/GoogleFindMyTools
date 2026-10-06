@@ -5,8 +5,8 @@
 
 from FMDNCrypto.sha import calculate_truncated_sha256
 
-class FMDNOwnerOperations:
 
+class FMDNOwnerOperations:
     def __init__(self):
         self.recovery_key = None
         self.ringing_key = None

@@ -17,18 +17,18 @@ def _generate_aas_token():
     token = request_oauth_account_token_flow()
 
     aas_token_response = gpsoauth.exchange_token(username, token, android_id)
-    aas_token = aas_token_response['Token']
+    aas_token = aas_token_response["Token"]
 
-    if 'Email' in aas_token_response:
-        email = aas_token_response['Email']
+    if "Email" in aas_token_response:
+        email = aas_token_response["Email"]
         set_cached_value(username_string, email)
 
     return aas_token
 
 
 def get_aas_token():
-    return get_cached_value_or_set('aas_token', _generate_aas_token)
+    return get_cached_value_or_set("aas_token", _generate_aas_token)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(get_aas_token())

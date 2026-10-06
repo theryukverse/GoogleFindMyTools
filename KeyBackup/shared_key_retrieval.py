@@ -23,8 +23,8 @@ def _retrieve_shared_key():
 
 
 def get_shared_key() -> bytes:
-    return unhexlify(get_cached_value_or_set('shared_key', _retrieve_shared_key))
+    return unhexlify(get_cached_value_or_set("shared_key", _retrieve_shared_key))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(get_shared_key())

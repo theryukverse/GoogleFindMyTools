@@ -18,13 +18,13 @@ from example_data_provider import get_example_data
 
 def rx_to_ry(Rx: int, curve) -> int:
     # Calculate y^2 = x^3 + ax + b (mod p)
-    Ryy = (Rx ** 3 + curve.a() * Rx + curve.b()) % curve.p()
+    Ryy = (Rx**3 + curve.a() * Rx + curve.b()) % curve.p()
 
     # Calculate modular square root
     Ry = pow(Ryy, (curve.p() + 1) // 4, curve.p())
 
     # Verify the result
-    if (Ry ** 2 % curve.p()) != Ryy:
+    if (Ry**2 % curve.p()) != Ryy:
         raise ValueError("The provided EID isn't a valid E2EE public key.")
 
     # Ensure y is even
@@ -63,14 +63,14 @@ def decrypt_aes_eax(data: bytes, tag: bytes, nonce: bytes, key: bytes) -> bytes:
 def encrypt(message: bytes, random: bytes, eid: bytes) -> (bytes, bytes):
     # Step 1: Choose a random number s in Fp
     curve = SECP160r1
-    s = int.from_bytes(random, byteorder='big', signed=True) % curve.order
+    s = int.from_bytes(random, byteorder="big", signed=True) % curve.order
 
     # Step 2: Compute S = s * G
     S = s * curve.generator
 
     # Step 3: Compute R = (Rx, Ry) by substitution in the curve equation
     # and picking an arbitrary Ry value out of the possible results
-    Rx = int.from_bytes(eid, byteorder='big')
+    Rx = int.from_bytes(eid, byteorder="big")
     Ry = rx_to_ry(Rx, curve.curve)
     R = Point(curve.curve, Rx, Ry)
 
@@ -81,13 +81,13 @@ def encrypt(message: bytes, random: bytes, eid: bytes) -> (bytes, bytes):
         algorithm=hashes.SHA256(),
         length=32,
         salt=None,
-        info=b'',
+        info=b"",
     )
-    k = hkdf.derive((s * R).x().to_bytes(20, 'big'))
+    k = hkdf.derive((s * R).x().to_bytes(20, "big"))
 
     # Step 5: Split Rx and Sx into lower 8 bytes
-    LRx = Rx.to_bytes(20, 'big')[12:]
-    LSx = S.x().to_bytes(20, 'big')[12:]
+    LRx = Rx.to_bytes(20, "big")[12:]
+    LSx = S.x().to_bytes(20, "big")[12:]
 
     # Step 6: Compute nonce
     nonce = LRx + LSx
@@ -96,10 +96,12 @@ def encrypt(message: bytes, random: bytes, eid: bytes) -> (bytes, bytes):
     m_dash, tag = encrypt_aes_eax(message, nonce, k)
 
     # Step 8: Result (m' || tag, Sx)
-    return m_dash + tag, S.x().to_bytes(20, 'big')
+    return m_dash + tag, S.x().to_bytes(20, "big")
 
 
-def decrypt(identity_key: bytes, encryptedAndTag: bytes, Sx: bytes, beacon_time_counter: int) -> bytes:
+def decrypt(
+    identity_key: bytes, encryptedAndTag: bytes, Sx: bytes, beacon_time_counter: int
+) -> bytes:
     # Split into encrypted message and 16-byte tag
     m_dash = encryptedAndTag[:-16]
     tag = encryptedAndTag[-16:]
@@ -113,22 +115,17 @@ def decrypt(identity_key: bytes, encryptedAndTag: bytes, Sx: bytes, beacon_time_
 
     # Compute S = (Sx, Sy) by substitution in the curve equation and picking an arbitrary Sy value out of the
     # possible results.
-    Sx = int.from_bytes(Sx, byteorder='big')
+    Sx = int.from_bytes(Sx, byteorder="big")
     Sy = rx_to_ry(Sx, curve.curve)
     S = Point(curve.curve, Sx, Sy)
 
     # Compute k = HKDF-SHA256((r * S)x) where (r * S)x is the x coordinate of the curve multiplication result.
-    hkdf = HKDF(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=None,
-        info=b''
-    )
-    k = hkdf.derive((r * S).x().to_bytes(20, 'big'))
+    hkdf = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b"")
+    k = hkdf.derive((r * S).x().to_bytes(20, "big"))
 
     # Compute nonce = LRx || LSx.
-    LRx = R.x().to_bytes(20, 'big')[12:]
-    LSx = S.x().to_bytes(20, 'big')[12:]
+    LRx = R.x().to_bytes(20, "big")[12:]
+    LSx = S.x().to_bytes(20, "big")[12:]
     nonce = LRx + LSx
 
     # Compute m = AES-EAX-256-DEC(k, nonce, m’, tag)

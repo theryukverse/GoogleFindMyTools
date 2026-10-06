@@ -5,11 +5,12 @@
 
 import csv
 
+
 def analyze_csv(file_path):
     data = {}
 
     # Read the CSV file and collect values in arrays based on the time offset
-    with open(file_path, mode='r') as file:
+    with open(file_path, mode="r") as file:
         reader = csv.reader(file)
         for row in reader:
             time_offset = int(row[0])
@@ -22,9 +23,12 @@ def analyze_csv(file_path):
     for time_offset, values in data.items():
         less = sum(1 for v in values if v < time_offset)
         greater_or_equal = sum(1 for v in values if v >= time_offset)
-        print(f"Time Offset: {time_offset}, Less: {less}, Greater or Equal: {greater_or_equal}, Total: {len(values)}")
+        print(
+            f"Time Offset: {time_offset}, Less: {less}, Greater or Equal: {greater_or_equal}, Total: {len(values)}"
+        )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # Example usage
-    csv_file = 'Results/eid_scan_results.csv'
+    csv_file = "Results/eid_scan_results.csv"
     analyze_csv(csv_file)

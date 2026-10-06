@@ -8,6 +8,7 @@ import shutil
 import platform
 import time
 
+
 def find_chrome():
     """Find Chrome executable using known paths and system commands."""
     possiblePaths = [
@@ -19,7 +20,7 @@ def find_chrome():
         "/usr/local/bin/google-chrome",
         "/opt/google/chrome/chrome",
         "/snap/bin/chromium",
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     ]
     # Check predefined paths
     for path in possiblePaths:
@@ -37,12 +38,14 @@ def find_chrome():
         print(f"[ChromeDriver] Error while searching system paths: {e}")
     return None
 
+
 def get_options():
     chrome_options = uc.ChromeOptions()
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     return chrome_options
+
 
 def create_driver():
     """Create a Chrome WebDriver with undetected_chromedriver."""
@@ -56,7 +59,7 @@ def create_driver():
             time.sleep(2)  # Wait for processes to close
         except:
             pass
-            
+
         chrome_options = get_options()
         driver = uc.Chrome(options=chrome_options, version_main=None)
         print("[ChromeDriver] Installed and browser started.")
@@ -73,10 +76,12 @@ def create_driver():
                 print(f"[ChromeDriver] ChromeDriver started using {chrome_path}")
                 return driver
             except Exception as e:
-                print(f"[ChromeDriver] ChromeDriver failed using path {chrome_path}: {e}")
+                print(
+                    f"[ChromeDriver] ChromeDriver failed using path {chrome_path}: {e}"
+                )
         else:
             print("[ChromeDriver] No Chrome executable found in known paths.")
-        
+
         # Final fallback - try headless mode
         print("[ChromeDriver] Trying headless mode as last resort...")
         try:
@@ -87,12 +92,13 @@ def create_driver():
             return driver
         except Exception as e:
             print(f"[ChromeDriver] Headless mode also failed: {e}")
-        
+
         raise Exception(
             "[ChromeDriver] Failed to install ChromeDriver. A current version of Chrome was not detected on your system.\n"
             "If you know that Chrome is installed, update Chrome to the latest version. If the script is still not working, "
             "set the path to your Chrome executable manually inside the script."
         )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     create_driver()

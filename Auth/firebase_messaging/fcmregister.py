@@ -93,6 +93,7 @@ def _normalize_sha1_fingerprint(v: str) -> str:
         raise ValueError(f"Invalid SHA-1 fingerprint: {v!r}")
     return h
 
+
 class FcmRegister:
     CLIENT_TIMEOUT = ClientTimeout(total=100)
 
@@ -297,8 +298,9 @@ class FcmRegister:
     def _add_android_restriction_headers(self, headers: dict[str, str]) -> None:
         if self.config.android_package and self.config.android_cert_sha1:
             headers["X-Android-Package"] = self.config.android_package
-            headers["X-Android-Cert"] = _normalize_sha1_fingerprint(self.config.android_cert_sha1)
-
+            headers["X-Android-Cert"] = _normalize_sha1_fingerprint(
+                self.config.android_cert_sha1
+            )
 
     async def fcm_install_and_register(
         self, gcm_data: dict[str, Any], keys: dict[str, Any]
@@ -324,7 +326,7 @@ class FcmRegister:
             "x-firebase-client": hb_header,
             "x-goog-api-key": self.config.api_key,
         }
-        self._add_android_restriction_headers(headers) 
+        self._add_android_restriction_headers(headers)
         payload = {
             "appId": self.config.app_id,
             "authVersion": AUTH_VERSION,

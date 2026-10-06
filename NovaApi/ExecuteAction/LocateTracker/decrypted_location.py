@@ -21,6 +21,7 @@ class WrappedLocation:
             return None
         try:
             from ProtoDecoders import DeviceUpdate_pb2
+
             proto_loc = DeviceUpdate_pb2.Location()
             proto_loc.ParseFromString(self.decrypted_location)
             return proto_loc
@@ -51,7 +52,9 @@ class WrappedLocation:
     @property
     def formatted_time(self):
         try:
-            return datetime.datetime.fromtimestamp(self.time).strftime('%Y-%m-%d %H:%M:%S')
+            return datetime.datetime.fromtimestamp(self.time).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
         except Exception:
             return str(self.time)
 

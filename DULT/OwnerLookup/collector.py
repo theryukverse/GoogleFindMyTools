@@ -28,11 +28,10 @@ def check_url_for_404(url):
         return True
 
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     seconds = 0
     interval = 1024
-    csv_file = 'Results/eid_scan_results.csv'
+    csv_file = "Results/eid_scan_results.csv"
     current_iteration = 0
 
     last_start_time = seconds
@@ -45,22 +44,30 @@ if __name__ == '__main__':
         results = []
 
         # Start at the last known time offset that was successful - 20 seconds (to account for some randomness)
-        current_tried_offset = max(0, last_start_time - 20*interval)
+        current_tried_offset = max(0, last_start_time - 20 * interval)
 
         failed_attempts = 0
 
         # Print that a new iteration started, as well as the current date
-        print(f"New iteration started at {datetime.now()} with offset {current_tried_offset}")
+        print(
+            f"New iteration started at {datetime.now()} with offset {current_tried_offset}"
+        )
 
         while True:
-            (eid, url) = getOwnerLoopUpLink(unhexlify(get_example_data("sample_identity_key")), current_tried_offset)
+            (eid, url) = getOwnerLoopUpLink(
+                unhexlify(get_example_data("sample_identity_key")), current_tried_offset
+            )
             success = not check_url_for_404(url)
-            print(f"Time Offset: {current_tried_offset}, EID: {eid}, URL: {url}, Success: {success}")
+            print(
+                f"Time Offset: {current_tried_offset}, EID: {eid}, URL: {url}, Success: {success}"
+            )
 
             if success:
                 # found first non-404
                 if not found_non_404:
-                    print("Found first non-404 URL at time offset:", current_tried_offset)
+                    print(
+                        "Found first non-404 URL at time offset:", current_tried_offset
+                    )
                     last_start_time = current_tried_offset
                     found_non_404 = True
 
@@ -79,10 +86,10 @@ if __name__ == '__main__':
                 break
 
             # sleep 10 seconds +- random 0-5 seconds
-            time.sleep(10 + struct.unpack('I', os.urandom(4))[0] % 6)
+            time.sleep(10 + struct.unpack("I", os.urandom(4))[0] % 6)
 
         # Write results to CSV
-        with open(csv_file, mode='a', newline='') as file:
+        with open(csv_file, mode="a", newline="") as file:
             writer = csv.writer(file)
             for result in results:
                 writer.writerow(result)

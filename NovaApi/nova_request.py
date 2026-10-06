@@ -21,7 +21,7 @@ def nova_request(api_scope, hex_payload):
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
         "Authorization": "Bearer " + android_device_manager_oauth_token,
         "Accept-Language": "en-US",
-        "User-Agent": "fmd/20006320; gzip"
+        "User-Agent": "fmd/20006320; gzip",
     }
 
     payload = binascii.unhexlify(hex_payload)
@@ -31,9 +31,9 @@ def nova_request(api_scope, hex_payload):
     if response.status_code == 200:
         return response.content.hex()
     else:
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text, "html.parser")
         print("[NovaRequest] Error: ", soup.get_text())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(get_aas_token())

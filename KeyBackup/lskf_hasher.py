@@ -12,7 +12,7 @@ from example_data_provider import get_example_data
 
 
 def ascii_to_bytes(string):
-    return string.encode('ascii')
+    return string.encode("ascii")
 
 
 def get_lskf_hash(pin: str, salt: bytes) -> bytes:
@@ -31,10 +31,11 @@ def get_lskf_hash(pin: str, salt: bytes) -> bytes:
         N=log_n_cost,
         r=block_size,
         p=parallelization,
-        dkLen=key_length
+        dkLen=key_length,
     )
 
     return hashed
+
 
 def hash_pin(pin):
     sample_pin_salt = unhexlify(get_example_data("sample_pin_salt"))
@@ -46,7 +47,7 @@ def hash_pin(pin):
     return pin, hash_hex
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     start_time = time.time()
     pins = [f"{i:04d}" for i in range(10000)]
 
