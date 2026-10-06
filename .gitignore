@@ -232,12 +232,6 @@ data/
 *.sqlite
 *.sqlite3
 
-### Docker ###
-.dockerignore
-Dockerfile
-docker-compose.yml
-docker-compose.override.yml
-
 ### Editor ###
 .vscode/
 .idea/
