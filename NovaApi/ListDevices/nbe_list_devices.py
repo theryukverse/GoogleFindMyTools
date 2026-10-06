@@ -77,6 +77,15 @@ def list_devices():
 
         get_location_data_for_device(selected_canonic_id, selected_device_name)
 
+def list_devices_with_return():
+    print("Loading...")
+    result_hex = request_device_list()
+
+    device_list = parse_device_list_protobuf(result_hex)
+
+    refresh_custom_trackers(device_list)
+    canonic_ids = get_canonic_ids(device_list)
+    return canonic_ids
 
 if __name__ == "__main__":
     list_devices()
